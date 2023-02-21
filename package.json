@@ -1,0 +1,17 @@
+{
+  "name": "first-node-express-mongo-api",
+  "version": "1.0.0",
+  "description": "\"My first node express and mongo api.\"",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2"
+  }
+}
