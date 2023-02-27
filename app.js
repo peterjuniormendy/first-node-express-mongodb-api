@@ -92,6 +92,23 @@ app.patch("/contacts/:id", async (req, res) => {
     return res.json(response);
   }
 
+  if (phone) {
+    const contacts = await Contacts.find();
+
+    contacts.forEach((contact) => {
+      if (contact.phone == phone) {
+        res.statusCode = 400;
+
+        response.status = "Failure";
+        response.message = "Bad request";
+        response.data = null;
+        response.error = "Phone already exist";
+
+        return res.json(response);
+      }
+    });
+  }
+
   await Contacts.findByIdAndUpdate(contactId, {
     name: name,
     phone: phone,
@@ -113,21 +130,43 @@ app.post("/contacts", async (req, res) => {
     message: "Contact successfully created",
   };
 
-  const { name, phone } = req.body;
+  const { name, phone, email, address } = req.body;
 
   // Validate fields
-  if (!name || !phone) {
+  if (!name || !phone || !email || !address) {
     res.statusCode = 400;
 
     response.status = "Failure";
     response.message = "Bad request";
     response.data = null;
-    response.error = "Both name and phone are required";
+    response.error = "All fields are required";
 
     return res.json(response);
   }
 
-  const contact = new Contacts({ name: name, phone: phone });
+  if (phone) {
+    const contacts = await Contacts.find();
+
+    contacts.forEach((contact) => {
+      if (contact.phone == phone) {
+        res.statusCode = 400;
+
+        response.status = "Failure";
+        response.message = "Bad request";
+        response.data = null;
+        response.error = "Phone already exist";
+
+        return res.json(response);
+      }
+    });
+  }
+
+  const contact = new Contacts({
+    name: name,
+    phone: phone,
+    email: email,
+    address: address,
+  });
 
   await Contacts.create(contact);
 
